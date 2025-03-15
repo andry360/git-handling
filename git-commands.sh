@@ -1,7 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+header_info() {
+clear
+cat <<"EOF"
+git handling commands!
+EOF
+}
 
 # Funzione per mostrare il menu principale
- show_menu() {
+show_menu() {
     clear
     echo "============================================="
     echo "      🚀 GIT COMMAND HELPER - MENU 🚀       "
@@ -73,13 +80,11 @@ show_section() {
             echo "2) Torna al menu principale"
             ;;
         8)  # Risoluzione conflitti
-            echo "1) Mostra quali file sono in conflitto (git status)"
-            echo "2) Tieni solo la versione corretta e salva (git add nomefile)"
-            echo "3) Completa il merge o rebase (git commit -m 'Risolto conflitto su nomefile')"
-            echo "4) Accetta sempre la tua versione (git checkout --ours .; git add .; git commit -m 'Risolto conflitto (tenuta la mia versione)')"
-            echo "5) Accetta sempre la versione remota (git checkout --theirs .; git add .; git commit -m 'Risolto conflitto (tenuta la versione remota)')"
-            echo "6) Torna al menu principale"
-            ;;
+            echo "1) mostra quali file sono in conflitto. (git status)"
+            echo "2) Tieni solo la versione corretta e salva. (git add nomefile)"
+            echo "3) Completa il merge o rebase (git commit -m "Risolto conflitto su nomefile")"
+            echo "4) Accettare sempre la tua versione"
+            echo "1) Accettare sempre la versione remota"
         9)  # Esci
             echo "👋 Uscita dal Git Helper..."
             exit 0
@@ -137,17 +142,16 @@ execute_command() {
 }
 
 # Loop principale
+header_info
 while true; do
     show_menu
     read -p "🔹 Scegli una categoria: " category
-    if [ "$category" -eq 9 ]; then
-        echo "👋 Uscita dal Git Helper..."
-        exit 0
-    fi
     show_section $category
-    if [ "$category" -lt 9 ]; then
+
+    if [ "$category" -lt 8 ]; then
         read -p "🛠️ Scegli un comando: " command
         execute_command "$category$command"
     fi
+
     read -p "🔄 Premi Invio per continuare..."
 done
