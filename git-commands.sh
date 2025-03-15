@@ -140,7 +140,7 @@ execute_command() {
 
     esac
 }
-
+echo "eh!
 # Loop principale
 header_info
 while true; do
