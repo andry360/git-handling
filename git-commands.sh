@@ -10,10 +10,6 @@ EOF
 # Funzione per mostrare il menu principale
 show_menu() {
     clear
-    echo "============================================="
-    echo "      🚀 GIT COMMAND HELPER - MENU 🚀       "
-    echo "============================================="
-    echo ""
     echo "🔹 1) 📁 Inizializzazione e Clonazione      - Crea o clona una repository Git"
     echo "🔹 2) 📄 Stato e Storico                    - Controlla lo stato e visualizza i commit"
     echo "🔹 3) 📌 Gestione dei Branch                - Crea, cambia e unisci branch"
