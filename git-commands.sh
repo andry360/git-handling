@@ -85,6 +85,7 @@ show_section() {
       echo "3) Completa il merge o rebase (git commit -m 'Risolto conflitto su nomefile')"
       echo "4) Accettare sempre la tua versione"
       echo "5) Accettare sempre la versione remota"
+      ;;
     9)  # Esci
       echo "👋 Uscita dal Git Helper..."
       exit 0
