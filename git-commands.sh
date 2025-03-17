@@ -2,7 +2,6 @@
 
 # Il comando per lanciare questo script da github è: bash -c "$(wget --no-cache -qLO - https://raw.githubusercontent.com/andry360/git-handling/refs/heads/main/git-commands.sh)"
 
-
 header_info() {
 clear
 cat <<"EOF"
