@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Il comando per lanciare questo script da github è: bash -c "$(wget --no-cache -qLO - https://raw.githubusercontent.com/andry360/git-handling/refs/heads/main/git-commands.sh)"
+
+
 header_info() {
 clear
 cat <<"EOF"
@@ -79,7 +82,7 @@ show_section() {
       echo "RISOLUZIONE CONFLITTI"
       echo "1) mostra quali file sono in conflitto. (git status)"
       echo "2) Tieni solo la versione corretta e salva. (git add nomefile)"
-      echo "3) Completa il merge o rebase (git commit -m "Risolto conflitto su nomefile")"
+      echo "3) Completa il merge o rebase (git commit -m \"Risolto conflitto su nomefile\")"
       echo "4) Accettare sempre la tua versione"
       echo "5) Accettare sempre la versione remota"
     9)  # Esci
@@ -130,10 +133,43 @@ execute_command() {
 
   # Risoluzione conflitti
   81) git status ;;
-  82) git add nomefile ;;
-  83) git commit -m "Risolto conflitto su nomefile" ;;
-  84) git checkout --ours .; git add .; git commit -m "Risolto conflitto (tenuta la mia versione)"
-  85) git checkout --theirs .; git add .; git commit -m "Risolto conflitto (tenuta la versione remota)"
+  82) conflicted_files=$(git diff --name-only --diff-filter=U)
+      if [[ -z "$conflicted_files" ]]; then
+        printf "⚠️  Nessun file in conflitto trovato.\n" >&2
+      else
+        printf "✅ Aggiunta automatica dei file risolti:\n%s\n" "$conflicted_files"
+        git add $conflicted_files
+      fi
+      ;;
+  83) conflicted_files=$(git diff --name-only --diff-filter=U)
+      if [[ -z "$conflicted_files" ]]; then
+        printf "⚠️  Nessun file in conflitto trovato.\n" >&2
+      else
+        printf "✅ Completamento del merge per i file risolti:\n%s\n" "$conflicted_files"
+        git add $conflicted_files
+        git commit -m "Risolto conflitto su: $conflicted_files"
+      fi
+      ;;
+  84) conflicted_files=$(git diff --name-only --diff-filter=U)
+      if [[ -z "$conflicted_files" ]]; then
+        printf "⚠️  Nessun file in conflitto trovato.\n" >&2
+      else
+        printf "✅ Accettata la versione locale per i file:\n%s\n" "$conflicted_files"
+        git checkout --ours $conflicted_files
+        git add $conflicted_files
+        git commit -m "Risolto conflitto (tenuta la mia versione): $conflicted_files"
+      fi
+      ;;
+  85) conflicted_files=$(git diff --name-only --diff-filter=U)
+      if [[ -z "$conflicted_files" ]]; then
+        printf "⚠️  Nessun file in conflitto trovato.\n" >&2
+      else
+        printf "✅ Accettata la versione remota per i file:\n%s\n" "$conflicted_files"
+        git checkout --theirs $conflicted_files
+        git add $conflicted_files
+        git commit -m "Risolto conflitto (tenuta la versione remota): $conflicted_files"
+    fi
+    ;;
 
   esac
 }
