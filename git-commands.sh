@@ -82,7 +82,7 @@ show_section() {
       echo "RISOLUZIONE CONFLITTI"
       echo "1) mostra quali file sono in conflitto. (git status)"
       echo "2) Tieni solo la versione corretta e salva. (git add nomefile)"
-      echo "3) Completa il merge o rebase (git commit -m \"Risolto conflitto su nomefile\")"
+      echo "3) Completa il merge o rebase (git commit -m 'Risolto conflitto su nomefile')"
       echo "4) Accettare sempre la tua versione"
       echo "5) Accettare sempre la versione remota"
     9)  # Esci
