@@ -188,3 +188,14 @@ while true; do
 
   read -p "🔄 Premi Invio per continuare..."
 done
+
+
+: <<'COMMENTO'
+
+chmod -R a+rx ~/documenti
+git status # Verifica le modifiche
+git add . # Aggiungi tutti i file modificati allo staging
+git commit -m "Aggiunti permessi di lettura ed esecuzione ai file" # Committa le modifiche
+git push origin main # Esegui il push delle modifiche sul branch main
+
+COMMENTO
