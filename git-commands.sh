@@ -184,8 +184,7 @@ execute_command() {
     if [[ "$do_push" =~ ^[sS]$ ]]; then
       git status
       git add .
-      read -p "Messaggio del commit: " msg
-      git commit -m "$msg"
+      git commit -m "permessi aggiornati"
       git push origin main
     else
       echo "Push annullato."
