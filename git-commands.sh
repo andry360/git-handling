@@ -21,6 +21,7 @@ show_menu() {
   echo "🔹 7) ❌ Annulla Modifiche                  - Ripristina file o annulla commit"
   echo "🔹 8) ✅ Risolvi conflitti                  - Serie di comandi utili in caso di conflitti"
   echo "🔹 9) 🚪 Esci                               - Chiude il programma"
+  echo "🔹 10) 🛡️ Permessi e Push                   - Rendi tutto leggibile, scrivibile, eseguibile e fai push"
   echo ""
 }
 
@@ -88,6 +89,11 @@ show_section() {
     9)  # Esci
       echo "👋 Uscita dal Git Helper..."
       exit 0
+      ;;
+    10)  # Permessi e Push
+      echo "🛡️ PERMESSI E PUSH"
+      echo "1) Dai permessi di lettura, scrittura ed esecuzione a tutti i file e cartelle (chmod -R a+rwx .)"
+      echo "2) Torna al menu principale"
       ;;
   esac
     echo ""
@@ -170,6 +176,21 @@ execute_command() {
         git commit -m "Risolto conflitto (tenuta la versione remota): $conflicted_files"
     fi
     ;;
+  # Permessi e Push
+  101)
+    chmod -R a+rwx .
+    echo "✅ Permessi di lettura, scrittura ed esecuzione assegnati a tutti i file e cartelle."
+    read -p "Vuoi eseguire una push ora? (s/n): " do_push
+    if [[ "$do_push" =~ ^[sS]$ ]]; then
+      git status
+      git add .
+      read -p "Messaggio del commit: " msg
+      git commit -m "$msg"
+      git push origin main
+    else
+      echo "Push annullato."
+    fi
+    ;;
 
   esac
 }
@@ -184,6 +205,9 @@ while true; do
   if [ "$category" -lt 8 ]; then
     read -p "🛠️ Scegli un comando: " command
     execute_command "$category$command"
+  elif [ "$category" -eq 10 ]; then
+    read -p "🛠️ Scegli un comando: " command
+    execute_command "${category}1"
   fi
 
   read -p "🔄 Premi Invio per continuare..."
