@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+git config --global credential.helper 'cache --timeout=1800'
+
 # Il comando per lanciare questo script da github è: bash -c "$(wget --no-cache -qLO - https://raw.githubusercontent.com/andry360/git-handling/refs/heads/main/git-commands.sh)"
 
 header_info() {
