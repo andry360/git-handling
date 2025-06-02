@@ -169,16 +169,20 @@ execute_command() {
         git commit -m "Risolto conflitto (tenuta la mia versione): $conflicted_files"
       fi
       ;;
-  85) conflicted_files=$(git diff --name-only --diff-filter=U)
+  85) 
+      conflicted_files=$(git diff --name-only --diff-filter=U)
       if [[ -z "$conflicted_files" ]]; then
-        printf "⚠️  Nessun file in conflitto trovato.\n" >&2
+        echo "⚠️  Nessun file in conflitto trovato. Procedo con il pull accettando la versione remota."
+        git pull --strategy-option=theirs
       else
-        printf "✅ Accettata la versione remota per i file:\n%s\n" "$conflicted_files"
+        echo "✅ Accettata la versione remota per i file in conflitto:"
+        echo "$conflicted_files"
         git checkout --theirs $conflicted_files
         git add $conflicted_files
         git commit -m "Risolto conflitto (tenuta la versione remota): $conflicted_files"
-    fi
-    ;;
+      fi
+      echo "✅ Repository sincronizzato. Ora puoi fare una push."
+      ;;
   # Permessi e Push
   91)
     chmod -R a+rwx .
