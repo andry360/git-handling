@@ -22,8 +22,9 @@ show_menu() {
   echo "🔹 6) 🎯 Tagging e Versionamento            - Crea e visualizza tag per versioning"
   echo "🔹 7) ❌ Annulla Modifiche                  - Ripristina file o annulla commit"
   echo "🔹 8) ✅ Risolvi conflitti                  - Serie di comandi utili in caso di conflitti"
-  echo "🔹 9) 🚪 Esci                               - Chiude il programma"
-  echo "🔹 10) 🛡️ Permessi e Push                   - Rendi tutto leggibile, scrivibile, eseguibile e fai push"
+  echo "🔹 9) 🛡️ Permessi e Push                   - Rendi tutto leggibile, scrivibile, eseguibile e fai push"
+  echo "🔹 10) 🚪 Esci                               - Chiude il programma"
+
   echo ""
 }
 
@@ -88,14 +89,14 @@ show_section() {
       echo "4) Accettare sempre la tua versione"
       echo "5) Accettare sempre la versione remota"
       ;;
-    9)  # Esci
-      echo "👋 Uscita dal Git Helper..."
-      exit 0
-      ;;
-    10)  # Permessi e Push
+    9)  # Permessi e Push
       echo "🛡️ PERMESSI E PUSH"
       echo "1) Dai permessi di lettura, scrittura ed esecuzione a tutti i file e cartelle (chmod -R a+rwx .)"
       echo "2) Torna al menu principale"
+      ;;
+    10)  # Esci
+      echo "👋 Uscita dal Git Helper..."
+      exit 0
       ;;
   esac
     echo ""
