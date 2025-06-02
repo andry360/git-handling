@@ -22,8 +22,8 @@ show_menu() {
   echo "🔹 6) 🎯 Tagging e Versionamento            - Crea e visualizza tag per versioning"
   echo "🔹 7) ❌ Annulla Modifiche                  - Ripristina file o annulla commit"
   echo "🔹 8) ✅ Risolvi conflitti                  - Serie di comandi utili in caso di conflitti"
-  echo "🔹 9) 🛡️ Permessi e Push                   - Rendi tutto leggibile, scrivibile, eseguibile e fai push"
-  echo "🔹 10) 🚪 Esci                               - Chiude il programma"
+  echo "🔹 9) 🛡️ Permessi e Push                    - Rendi tutto leggibile, scrivibile, eseguibile e fai push"
+  echo "🔹 10) 🚪 Esci                              - Chiude il programma"
 
   echo ""
 }
