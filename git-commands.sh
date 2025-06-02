@@ -173,15 +173,21 @@ execute_command() {
       conflicted_files=$(git diff --name-only --diff-filter=U)
       if [[ -z "$conflicted_files" ]]; then
         echo "⚠️  Nessun file in conflitto trovato. Procedo con il pull accettando la versione remota."
+        git config pull.rebase false # Configura il pull per fare un merge
         git pull --strategy-option=theirs
+        if [[ $? -eq 0 ]]; then
+          echo "✅ Repository sincronizzato. Ora puoi fare una push."
+        else
+          echo "❌ Errore durante il pull. Verifica manualmente i conflitti o la configurazione."
+        fi
       else
         echo "✅ Accettata la versione remota per i file in conflitto:"
         echo "$conflicted_files"
         git checkout --theirs $conflicted_files
         git add $conflicted_files
         git commit -m "Risolto conflitto (tenuta la versione remota): $conflicted_files"
+        echo "✅ Repository sincronizzato. Ora puoi fare una push."
       fi
-      echo "✅ Repository sincronizzato. Ora puoi fare una push."
       ;;
   # Permessi e Push
   91)
