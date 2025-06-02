@@ -204,7 +204,7 @@ while true; do
   read -p "🔹 Scegli una categoria: " category
   show_section $category
 
-  if [ "$category" -lt 8 ]; then
+  if [ "$category" -lt 9 ]; then
     read -p "🛠️ Scegli un comando: " command
     execute_command "$category$command"
   elif [ "$category" -eq 10 ]; then
