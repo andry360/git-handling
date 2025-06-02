@@ -180,7 +180,7 @@ execute_command() {
     fi
     ;;
   # Permessi e Push
-  101)
+  91)
     chmod -R a+rwx .
     echo "✅ Permessi di lettura, scrittura ed esecuzione assegnati a tutti i file e cartelle."
     read -p "Vuoi eseguire una push ora? (s/n): " do_push
@@ -202,15 +202,14 @@ header_info
 while true; do
   show_menu
   read -p "🔹 Scegli una categoria: " category
-  show_section $category
-
-  if [ "$category" -lt 9 ]; then
-    read -p "🛠️ Scegli un comando: " command
-    execute_command "$category$command"
-  elif [ "$category" -eq 10 ]; then
-    read -p "🛠️ Scegli un comando: " command
-    execute_command "${category}1"
+  if [ "$category" -eq 10 ]; then
+    echo "👋 Uscita dal Git Helper..."
+    exit 0
   fi
+
+  show_section $category
+  read -p "🛠️ Scegli un comando: " command
+  execute_command "$category$command"
 
   read -p "🔄 Premi Invio per continuare..."
 done
