@@ -35,8 +35,10 @@ show_section() {
     1)  # Inizializzazione e Clonazione
       echo "📁 INIZIALIZZAZIONE E CLONAZIONE"
       echo "1) Inizializza una repository (git init)"
-      echo "2) Clona un repository (git clone URL)"
-      echo "3) Torna al menu principale"
+      echo "2) Clona un repository inserendo manualmente il link (git clone URL)"
+      echo "3) Clona prxmx-config-v1-bridge (git clone https://gitlab.com/andry360/prxmx-config.git)"
+      echo "4) Clona pxmx-config-v2-passtrough (git clone https://gitlab.com/andry360/pxmx-config-v2-passtrough.git)"
+      echo "5) Torna al menu principale"
       ;;
     2)  # Stato e Storico
       echo "📄 STATO E STORICO"
@@ -107,7 +109,28 @@ execute_command() {
   case $1 in
   # Inizializzazione e Clonazione
   11) git init ;;
-  12) read -p "Inserisci l'URL del repository: " repo_url; git clone "$repo_url" ;;
+  12)
+    echo "Scegli quale repository clonare:"
+    echo "1) Inserisci manualmente il link"
+    echo "2) prxmx-config (https://gitlab.com/andry360/prxmx-config.git)"
+    echo "3) pxmx-config-v2-passtrough (https://gitlab.com/andry360/pxmx-config-v2-passtrough.git)"
+    read -p "Scelta: " clone_choice
+    case $clone_choice in
+      1)
+        read -p "Inserisci l'URL del repository: " repo_url
+        git clone "$repo_url"
+        ;;
+      2)
+        git clone https://gitlab.com/andry360/prxmx-config.git
+        ;;
+      3)
+        git clone https://gitlab.com/andry360/pxmx-config-v2-passtrough.git
+        ;;
+      *)
+        echo "Scelta non valida."
+        ;;
+    esac
+    ;;
 
   # Stato e Storico
   21) git status ;;
