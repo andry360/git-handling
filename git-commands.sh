@@ -37,7 +37,7 @@ show_section() {
       echo "1) Inizializza una repository (git init)"
       echo "2) Clona un repository inserendo manualmente il link (git clone URL)"
       echo "3) Clona prxmx-config-v1-bridge (git clone https://gitlab.com/andry360/prxmx-config.git)"
-      echo "4) Clona pxmx-config-v2-passtrough (git clone https://gitlab.com/andry360/pxmx-config-v2-passtrough.git)"
+      echo "4) Clona pxmx-config-v2-passtrough con Git LFS (git clone https://gitlab.com/andry360/pxmx-config-v2-passtrough.git)"
       echo "5) Torna al menu principale"
       ;;
     2)  # Stato e Storico
@@ -109,9 +109,37 @@ execute_command() {
   case $1 in
   # Inizializzazione e Clonazione
   11) git init ;;
-  12) read -p "Inserisci l'URL del repository: " repo_url; git clone "$repo_url" ;;
+  12) 
+      read -p "Inserisci l'URL del repository: " repo_url
+      read -p "Vuoi utilizzare Git LFS per questo repository? (s/n): " use_lfs
+      if [[ "$use_lfs" =~ ^[sS]$ ]]; then
+        if ! command -v git-lfs &> /dev/null; then
+          echo "❌ Git LFS non è installato. Installalo prima di procedere."
+          return 1
+        fi
+        git clone "$repo_url"
+        cd "$(basename "$repo_url" .git)"
+        git lfs install
+        echo "✅ Git LFS configurato correttamente"
+        cd ..
+      else
+        git clone "$repo_url"
+      fi
+      ;;
   13) git clone https://gitlab.com/andry360/prxmx-config.git ;;
-  14) git clone https://gitlab.com/andry360/pxmx-config-v2-passtrough.git ;;
+  14) 
+      echo "🔄 Clonazione di pxmx-config-v2-passtrough con Git LFS..."
+      if ! command -v git-lfs &> /dev/null; then
+        echo "❌ Git LFS non è installato. Installalo prima di procedere."
+        return 1
+      fi
+      git clone https://gitlab.com/andry360/pxmx-config-v2-passtrough.git
+      cd pxmx-config-v2-passtrough
+      git lfs install
+      git lfs pull
+      echo "✅ Repository clonato e Git LFS configurato correttamente"
+      cd ..
+      ;;
 
   # Stato e Storico
   21) git status ;;
