@@ -4,6 +4,55 @@ git config --global credential.helper 'cache --timeout=1800'
 
 # Il comando per lanciare questo script da github è: bash -c "$(wget --no-cache -qLO - https://raw.githubusercontent.com/andry360/git-handling/refs/heads/main/git-commands.sh)"
 
+# Funzione per verificare e installare Git LFS
+check_and_install_lfs() {
+  if ! command -v git-lfs &> /dev/null; then
+    echo "⚠️ Git LFS non è installato."
+    read -p "Vuoi installare Git LFS? (s/n): " install_lfs
+    if [[ "$install_lfs" =~ ^[sS]$ ]]; then
+      if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        # Per sistemi basati su Debian/Ubuntu
+        if command -v apt-get &> /dev/null; then
+          sudo apt-get update && sudo apt-get install -y git-lfs
+        # Per sistemi basati su Red Hat/Fedora
+        elif command -v dnf &> /dev/null; then
+          sudo dnf install -y git-lfs
+        else
+          echo "❌ Sistema operativo non supportato per l'installazione automatica."
+          echo "Per favore installa Git LFS manualmente dal sito: https://git-lfs.github.com/"
+          return 1
+        fi
+      elif [[ "$OSTYPE" == "darwin"* ]]; then
+        # Per macOS con Homebrew
+        if command -v brew &> /dev/null; then
+          brew install git-lfs
+        else
+          echo "❌ Homebrew non trovato. Per favore installa Homebrew o Git LFS manualmente."
+          echo "Visita: https://git-lfs.github.com/"
+          return 1
+        fi
+      else
+        echo "❌ Sistema operativo non supportato per l'installazione automatica."
+        echo "Per favore installa Git LFS manualmente dal sito: https://git-lfs.github.com/"
+        return 1
+      fi
+      
+      if [ $? -eq 0 ]; then
+        echo "✅ Git LFS installato con successo!"
+        git lfs install
+        return 0
+      else
+        echo "❌ Errore durante l'installazione di Git LFS."
+        return 1
+      fi
+    else
+      echo "❌ Git LFS è necessario per questo repository."
+      return 1
+    fi
+  fi
+  return 0
+}
+
 header_info() {
 clear
 cat <<"EOF"
@@ -11,7 +60,7 @@ git handling commands!
 EOF
 }
 
-# Funzione per mostrare il menu principale
+# Funzione per il menu principale
 show_menu() {
   clear
   echo "🔹 1) 📁 Inizializzazione e Clonazione      - Crea o clona una repository Git"
@@ -108,18 +157,17 @@ show_section() {
 execute_command() {
   case $1 in
   # Inizializzazione e Clonazione
-  11) git init ;;
-  12) 
+  11) git init ;;  12) 
       read -p "Inserisci l'URL del repository: " repo_url
       read -p "Vuoi utilizzare Git LFS per questo repository? (s/n): " use_lfs
       if [[ "$use_lfs" =~ ^[sS]$ ]]; then
-        if ! command -v git-lfs &> /dev/null; then
-          echo "❌ Git LFS non è installato. Installalo prima di procedere."
+        if ! check_and_install_lfs; then
           return 1
         fi
         git clone "$repo_url"
         cd "$(basename "$repo_url" .git)"
         git lfs install
+        git lfs pull
         echo "✅ Git LFS configurato correttamente"
         cd ..
       else
@@ -129,8 +177,7 @@ execute_command() {
   13) git clone https://gitlab.com/andry360/prxmx-config.git ;;
   14) 
       echo "🔄 Clonazione di pxmx-config-v2-passtrough con Git LFS..."
-      if ! command -v git-lfs &> /dev/null; then
-        echo "❌ Git LFS non è installato. Installalo prima di procedere."
+      if ! check_and_install_lfs; then
         return 1
       fi
       git clone https://gitlab.com/andry360/pxmx-config-v2-passtrough.git
